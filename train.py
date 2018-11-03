@@ -18,7 +18,7 @@ class NaiveBayes:
         df = pd.read_table(file,
                            sep='\t',
                            header=None,
-                           names=['label', 'message'])
+                           names=['label', 'comment'])
 
         counts = self.prepare_data(df)
         x_train, x_test, y_train, y_test = train_test_split(counts, df['label'], test_size=0.1, random_state=69)
@@ -27,12 +27,12 @@ class NaiveBayes:
 
     def prepare_data(self, df):
         df['label'] = df.label.map({'positive': 0, 'negative': 1})
-        df['message'] = df.message.map(lambda x: x.lower())
-        df['message'] = df.message.str.replace('[^\w\s]', '')
-        df['message'] = df['message'].apply(nltk.word_tokenize)
-        df['message'] = df['message'].apply(lambda x: [self.stemmer.stem(y) for y in x])
-        df['message'] = df['message'].apply(lambda x: ' '.join(x))
-        counts = self.count_vect.fit_transform(df['message'])
+        df['comment'] = df.comment.map(lambda x: x.lower())
+        df['comment'] = df.comment.str.replace('[^\w\s]', '')
+        df['comment'] = df['comment'].apply(nltk.word_tokenize)
+        df['comment'] = df['comment'].apply(lambda x: [self.stemmer.stem(y) for y in x])
+        df['comment'] = df['comment'].apply(lambda x: ' '.join(x))
+        counts = self.count_vect.fit_transform(df['comment'])
         self.transformer = TfidfTransformer().fit(counts)
         counts = self.transformer.transform(counts)
         return counts
