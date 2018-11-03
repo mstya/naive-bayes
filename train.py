@@ -38,7 +38,7 @@ class NaiveBayes:
         return counts
 
     def predict(self, comment):
-        ham_counts = self.count_vect.transform([comment])
-        ham_counts = self.transformer.transform(ham_counts)
-        result = self.model.predict(ham_counts)
+        counts = self.count_vect.transform([comment])
+        counts = self.transformer.transform(counts)
+        result = self.model.predict(counts)
         return result
